@@ -34,50 +34,50 @@ def dn4_deta(integration_point):
 
 
 def dn1_dx(element, integration_point):
-    value_to_return = jacobian_2d_11(element, integration_point) * dn1_deta(integration_point)
-    value_to_return += jacobian_2d_12(element, integration_point) * dn1_dksi(integration_point)
+    value_to_return = derivative_y_derivative_eta(element, integration_point) * dn1_dksi(integration_point)
+    value_to_return += derivative_y_derivative_ksi(element, integration_point) * dn1_deta(integration_point)
     return value_to_return
 
 
 def dn2_dx(element, integration_point):
-    value_to_return = jacobian_2d_11(element, integration_point) * dn2_deta(integration_point)
-    value_to_return += jacobian_2d_12(element, integration_point) * dn2_dksi(integration_point)
+    value_to_return = derivative_y_derivative_eta(element, integration_point) * dn2_dksi(integration_point)
+    value_to_return += derivative_y_derivative_ksi(element, integration_point) * dn2_deta(integration_point)
     return value_to_return
 
 
 def dn3_dx(element, integration_point):
-    value_to_return = jacobian_2d_11(element, integration_point) * dn3_deta(integration_point)
-    value_to_return += jacobian_2d_12(element, integration_point) * dn3_dksi(integration_point)
+    value_to_return = derivative_y_derivative_eta(element, integration_point) * dn3_dksi(integration_point)
+    value_to_return += derivative_y_derivative_ksi(element, integration_point) * dn3_deta(integration_point)
     return value_to_return
 
 
 def dn4_dx(element, integration_point):
-    value_to_return = jacobian_2d_11(element, integration_point) * dn4_deta(integration_point)
-    value_to_return += jacobian_2d_12(element, integration_point) * dn4_dksi(integration_point)
+    value_to_return = derivative_y_derivative_eta(element, integration_point) * dn4_dksi(integration_point)
+    value_to_return += derivative_y_derivative_ksi(element, integration_point) * dn4_deta(integration_point)
     return value_to_return
 
 
 def dn1_dy(element, integration_point):
-    value_to_return = jacobian_2d_21(element, integration_point) * dn1_deta(integration_point)
-    value_to_return += jacobian_2d_22(element, integration_point) * dn1_dksi(integration_point)
+    value_to_return = derivative_x_derivative_ksi(element, integration_point) * dn1_deta(integration_point)
+    value_to_return += derivative_x_derivative_eta(element, integration_point) * dn1_dksi(integration_point)
     return value_to_return
 
 
 def dn2_dy(element, integration_point):
-    value_to_return = jacobian_2d_21(element, integration_point) * dn2_deta(integration_point)
-    value_to_return += jacobian_2d_22(element, integration_point) * dn2_dksi(integration_point)
+    value_to_return = derivative_x_derivative_ksi(element, integration_point) * dn2_deta(integration_point)
+    value_to_return += derivative_x_derivative_eta(element, integration_point) * dn2_dksi(integration_point)
     return value_to_return
 
 
 def dn3_dy(element, integration_point):
-    value_to_return = jacobian_2d_21(element, integration_point) * dn3_deta(integration_point)
-    value_to_return += jacobian_2d_22(element, integration_point) * dn3_dksi(integration_point)
+    value_to_return = derivative_x_derivative_ksi(element, integration_point) * dn3_deta(integration_point)
+    value_to_return += derivative_x_derivative_eta(element, integration_point) * dn3_dksi(integration_point)
     return value_to_return
 
 
 def dn4_dy(element, integration_point):
-    value_to_return = jacobian_2d_21(element, integration_point) * dn4_deta(integration_point)
-    value_to_return += jacobian_2d_22(element, integration_point) * dn4_dksi(integration_point)
+    value_to_return = derivative_x_derivative_ksi(element, integration_point) * dn4_deta(integration_point)
+    value_to_return += derivative_x_derivative_eta(element, integration_point) * dn4_dksi(integration_point)
     return value_to_return
 
 
@@ -117,7 +117,7 @@ def dn_dx_dn_dx_detj(element, integration_point):
 
     for i in range(len(array_to_return)):
         for j in range(len(array_to_return)):
-            array_to_return[i][j] *= det
+            array_to_return[i][j] *= 1/det
     return array_to_return
 
 
@@ -127,7 +127,7 @@ def dn_dy_dn_dy_detj(element, integration_point):
 
     for i in range(len(array_to_return)):
         for j in range(len(array_to_return)):
-            array_to_return[i][j] *= det
+            array_to_return[i][j] *= 1/det
     return array_to_return
 
 
