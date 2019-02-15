@@ -98,7 +98,20 @@ def jacobian_matrix_determinant(element, integration_point):
     det_value = 0.0
     det_value += derivative_x_derivative_ksi(element, integration_point) * derivative_y_derivative_eta(element, integration_point)
     det_value -= derivative_x_derivative_eta(element, integration_point) * derivative_x_derivative_eta(element, integration_point)
-    return det_value
+    mes_input = read_file()
+    #return det_value
+
+    node_height = float(mes_input[2])
+    node_length = float(mes_input[3])
+    return (node_length*node_height)/4
+
+
+def det_j():
+    mes_input = read_file()
+
+    node_height = float(mes_input[2])
+    node_length = float(mes_input[3])
+    return (node_length * node_height)/4
 
 
 def jacobi_transformation_matrix(element):
