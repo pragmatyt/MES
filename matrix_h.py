@@ -1,4 +1,5 @@
 from jacobian2D import *
+from boundary_condition import *
 
 
 def dn1_dksi(integration_point):
@@ -34,50 +35,50 @@ def dn4_deta(integration_point):
 
 
 def dn1_dx(element, integration_point):
-    value_to_return = jacobian_2d_11(element, integration_point) * dn1_deta(integration_point)
-    value_to_return += jacobian_2d_12(element, integration_point) * dn1_dksi(integration_point)
+    value_to_return = derivative_y_derivative_eta(element, integration_point) * dn1_dksi(integration_point)
+    value_to_return += derivative_y_derivative_ksi(element, integration_point) * dn1_deta(integration_point)
     return value_to_return
 
 
 def dn2_dx(element, integration_point):
-    value_to_return = jacobian_2d_11(element, integration_point) * dn2_deta(integration_point)
-    value_to_return += jacobian_2d_12(element, integration_point) * dn2_dksi(integration_point)
+    value_to_return = derivative_y_derivative_eta(element, integration_point) * dn2_dksi(integration_point)
+    value_to_return += derivative_y_derivative_ksi(element, integration_point) * dn2_deta(integration_point)
     return value_to_return
 
 
 def dn3_dx(element, integration_point):
-    value_to_return = jacobian_2d_11(element, integration_point) * dn3_deta(integration_point)
-    value_to_return += jacobian_2d_12(element, integration_point) * dn3_dksi(integration_point)
+    value_to_return = derivative_y_derivative_eta(element, integration_point) * dn3_dksi(integration_point)
+    value_to_return += derivative_y_derivative_ksi(element, integration_point) * dn3_deta(integration_point)
     return value_to_return
 
 
 def dn4_dx(element, integration_point):
-    value_to_return = jacobian_2d_11(element, integration_point) * dn4_deta(integration_point)
-    value_to_return += jacobian_2d_12(element, integration_point) * dn4_dksi(integration_point)
+    value_to_return = derivative_y_derivative_eta(element, integration_point) * dn4_dksi(integration_point)
+    value_to_return += derivative_y_derivative_ksi(element, integration_point) * dn4_deta(integration_point)
     return value_to_return
 
 
 def dn1_dy(element, integration_point):
-    value_to_return = jacobian_2d_21(element, integration_point) * dn1_deta(integration_point)
-    value_to_return += jacobian_2d_22(element, integration_point) * dn1_dksi(integration_point)
+    value_to_return = derivative_x_derivative_ksi(element, integration_point) * dn1_deta(integration_point)
+    value_to_return += derivative_x_derivative_eta(element, integration_point) * dn1_dksi(integration_point)
     return value_to_return
 
 
 def dn2_dy(element, integration_point):
-    value_to_return = jacobian_2d_21(element, integration_point) * dn2_deta(integration_point)
-    value_to_return += jacobian_2d_22(element, integration_point) * dn2_dksi(integration_point)
+    value_to_return = derivative_x_derivative_ksi(element, integration_point) * dn2_deta(integration_point)
+    value_to_return += derivative_x_derivative_eta(element, integration_point) * dn2_dksi(integration_point)
     return value_to_return
 
 
 def dn3_dy(element, integration_point):
-    value_to_return = jacobian_2d_21(element, integration_point) * dn3_deta(integration_point)
-    value_to_return += jacobian_2d_22(element, integration_point) * dn3_dksi(integration_point)
+    value_to_return = derivative_x_derivative_ksi(element, integration_point) * dn3_deta(integration_point)
+    value_to_return += derivative_x_derivative_eta(element, integration_point) * dn3_dksi(integration_point)
     return value_to_return
 
 
 def dn4_dy(element, integration_point):
-    value_to_return = jacobian_2d_21(element, integration_point) * dn4_deta(integration_point)
-    value_to_return += jacobian_2d_22(element, integration_point) * dn4_dksi(integration_point)
+    value_to_return = derivative_x_derivative_ksi(element, integration_point) * dn4_deta(integration_point)
+    value_to_return += derivative_x_derivative_eta(element, integration_point) * dn4_dksi(integration_point)
     return value_to_return
 
 
@@ -113,21 +114,21 @@ def dn_dy_dn_dy(element, integration_point):
 
 def dn_dx_dn_dx_detj(element, integration_point):
     array_to_return = dn_dx_dn_dx(element, integration_point)
-    det = jacobian_matrix_determinant(element, integration_point)
-
+    #det = jacobian_matrix_determinant(element, integration_point)
+    det = det_j()
     for i in range(len(array_to_return)):
         for j in range(len(array_to_return)):
-            array_to_return[i][j] *= det
+            array_to_return[i][j] *= 1/det
     return array_to_return
 
 
 def dn_dy_dn_dy_detj(element, integration_point):
     array_to_return = dn_dy_dn_dy(element, integration_point)
-    det = jacobian_matrix_determinant(element, integration_point)
-
+    #det = jacobian_matrix_determinant(element, integration_point)
+    det = det_j()
     for i in range(len(array_to_return)):
         for j in range(len(array_to_return)):
-            array_to_return[i][j] *= det
+            array_to_return[i][j] *= 1/det
     return array_to_return
 
 
@@ -149,10 +150,13 @@ def create_matrix_h(element):
     point_3 = k_dndx_dndy(element, 3)
     point_4 = k_dndx_dndy(element, 4)
     matrix = []
+    #print("element: " + str(element.element_id))
     for i in range(0, 4, 1):
         matrix.append([])
         for j in range(0, 4, 1):
             matrix[i].append(point_1[i][j] + point_2[i][j] + point_3[i][j] + point_4[i][j])
+
+    add_boundary_condtion(element, matrix)
     return matrix
 
 
@@ -164,19 +168,37 @@ def create_matrix_h_main():
     node_height = mes_input[2]
     node_length = mes_input[3]
 
-    node = create_nodes(nH, nL, node_height, node_length, 20)
-    element = create_elements(1, 1, node)
-    matrix = create_matrix_h(element[0])
-    return  matrix
+    nodes = create_nodes(nH, nL, node_height, node_length, 20)
+    elements = create_elements(nH, nL, nodes)
+    #print(len(elements))
+    # for i in range(len(elements)):
+    #     element = elements[i]
+    #     matrix = create_matrix_h(elements[i])
+    #     for j in range(len(matrix)):
+    #         print(matrix[j])
+    #     print("\n")
+
+    for i in range(len(elements)):
+        element = elements[i]
+        matrix = create_matrix_h(elements[i])
+        for row in range(len(matrix)):
+            for j in range(len(matrix)):
+                print("row: " + str(row) + " j: " + str(j))
+                print("row: " + str(element.nodes[row].node_id - 1) + " j: " + str(element.nodes[j].node_id - 1))
+                #print(element.nodes[j].node_id)
+                print(matrix[row][j])
+                print("\n")
+
+    #return matrix
 
 
 
 def main():
 
-    matrix = create_matrix_h_main()
-    for i in range(len(matrix)):
-        print(matrix[i])
-
+    # matrix = create_matrix_h_main()
+    # for i in range(len(matrix)):
+    #     print(matrix[i])
+    create_matrix_h_main()
 
 if __name__ == "__main__":
     main()

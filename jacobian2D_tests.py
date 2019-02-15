@@ -106,9 +106,9 @@ class TestJakobian2D(unittest.TestCase):
     # TEST: test derivative shape functions that are used to build of Jacoby matrix
 
     def test_derivative_x_derivative_ksi_integration_point_1(self):
-        node_to_test = create_nodes(1, 1, 0.025, 0.025, 20)
-        element_to_test = create_elements(1, 1, node_to_test)
-        self.assertAlmostEqual(0.0125, derivative_x_derivative_ksi(element_to_test[0], 1), None, None, 0.00001)
+        node_to_test = create_nodes(2, 2, 0.025, 0.025, 20)
+        element_to_test = create_elements(2, 2, node_to_test)
+        self.assertAlmostEqual(0.0125, derivative_x_derivative_ksi(element_to_test[1], 1), None, None, 0.00001)
 
     def test_derivative_y_derivative_ksi_integration_point_1(self):
         node_to_test = create_nodes(1, 1, 0.025, 0.025, 20)

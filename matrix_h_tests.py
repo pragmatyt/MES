@@ -31,7 +31,7 @@ class TestMartixH(unittest.TestCase):
     def test_dn1_dx_ip1(self):
         node_to_test = create_nodes(1, 1, 0.025, 0.025, 20)
         element_to_test = create_elements(1, 1, node_to_test)
-        self.assertAlmostEqual(-31.55, dn1_dx(element_to_test[0], 1), None, None, 0.01)
+        self.assertAlmostEqual(-31.55, dn1_dx(element_to_test[0], 1)/0.000625, None, None, 0.01)
 
     def test_dn1_dx_ip3(self):
         node_to_test = create_nodes(1, 1, 0.025, 0.025, 20)
